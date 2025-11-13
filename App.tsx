@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import CarteiraScreen from './app/CarteiraScreen';
 import ContasCartoesScreen from './app/ContasCartoesScreen';
 import DividasScreen from './app/DividasScreen';
@@ -27,26 +27,15 @@ export default function App() {
 
   const openMenu = () => setDrawerVisible(true);
   const closeMenu = () => setDrawerVisible(false);
-  const navigate = (key: string) => setRoute(key);
+  const navigate = (key: string) => {
+    setRoute(key);
+    closeMenu();
+  };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-  <Active onMenu={openMenu} />
-  <Drawer visible={drawerVisible} onClose={closeMenu} onNavigate={navigate} />
-      <View style={styles.tabbar}>
-        {routes.map(r => (
-          <TouchableOpacity key={r.key} style={styles.tab} onPress={() => setRoute(r.key)}>
-            <Text style={route === r.key ? styles.tabLabelActive : styles.tabLabel}>{r.label}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#f5f7fa' }}>
+      <Active onMenu={openMenu} onNavigate={navigate} />
+      <Drawer visible={drawerVisible} onClose={closeMenu} onNavigate={navigate} />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  tabbar: { height: 60, flexDirection: 'row', borderTopWidth: 1, borderTopColor: '#eee' },
-  tab: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  tabLabel: { color: '#555' },
-  tabLabelActive: { color: '#007AFF', fontWeight: '700' },
-});
